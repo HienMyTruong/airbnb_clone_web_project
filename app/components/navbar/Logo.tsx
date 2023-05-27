@@ -9,7 +9,7 @@ const Logo = () => {
             alt="Logo"
             className="hidden md:block cursor_pointer"
             height="100"
-            width="100"
+            width="200"
             src="/images/logo.png"
         />
     )

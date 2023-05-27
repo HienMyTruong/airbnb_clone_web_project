@@ -6,10 +6,10 @@ const Search = () => {
     return (
         <div
             className="
-                boder-[1px]
+                border-[1px]
                 w-full
-                md:w-auto
-                py-2
+                md:w-[420px]
+                py-1
                 rounded-full
                 shadow-sm
                 hover:shadow-md
@@ -73,15 +73,19 @@ const Search = () => {
                         "
                     >
                         <BiSearch size={18} />
+          
 
                     </div>
 
+
+                
                 </div>
 
-
+                
             </div>
 
 
+            
         </div>
     );
 
