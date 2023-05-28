@@ -18,7 +18,7 @@ interface ModalProps {
     secondaryActionLabel?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({
+const Modal: React.FC<ModalProps> = ({ 
     isOpen,
     onClose,
     onSubmit,
@@ -170,7 +170,20 @@ const Modal: React.FC<ModalProps> = ({
                                     w-full
                                 "
                             >
-                                <Button label={"click here"} />
+                                {secondaryAction && secondaryActionLabel && (
+                                    <Button 
+                                        outline
+                                        disabled={disabled}
+                                        label={secondaryActionLabel}
+                                        onClick={handleSecondaryAction}
+                                    />
+                                )}
+                                <Button 
+                                    disabled={disabled}
+                                    label={actionLabel}
+                                    onClick={handleSubmit}
+                                />
+                                
                             </div>
                         </div>
                     </div>
