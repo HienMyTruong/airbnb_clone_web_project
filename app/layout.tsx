@@ -4,6 +4,7 @@ import { Nunito } from 'next/font/google'
 import ClientOnly from './components/ClientOnly'
 import Modal from './components/modals/Modal'
 import RegisterModal from './components/modals/RegisterModal'
+import LoginModal from './components/modals/LoginModal'
 import ToasterProvider from './providers/ToasterProvider'
 
 
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className={font.className}>
         <ClientOnly>
           <ToasterProvider /> 
+          <LoginModal />
           <RegisterModal /> 
           <Navbar />
         </ClientOnly>

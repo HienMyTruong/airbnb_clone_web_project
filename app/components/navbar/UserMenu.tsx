@@ -4,17 +4,20 @@ import Avatar from '../Avatar';
 import MenuItem from './MenuItem';
 import { useCallback, useState } from 'react';
 import useRegisterModal from '@/app/hooks/useRegisterModal';
+import useLoginModal from '@/app/hooks/useLoginModal';
+
 
 const UserMenu = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const registerModal = useRegisterModal();
-    const toggleOpen = useCallback(() => { setIsOpen((value) => !value); }, []);
-    return ( 
-        <div className="relative">
-          <div className="flex flex-row items-center gap-3">
-            <div 
-              onClick={() => {}}
-              className="
+  const [isOpen, setIsOpen] = useState(false);
+  const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
+  const toggleOpen = useCallback(() => { setIsOpen((value) => !value); }, []);
+  return (
+    <div className="relative">
+      <div className="flex flex-row items-center gap-3">
+        <div
+          onClick={() => { }}
+          className="
                 hidden
                 md:block
                 text-sm 
@@ -26,12 +29,12 @@ const UserMenu = () => {
                 transition 
                 cursor-pointer
               "
-            >
-              Airbnb your home
-            </div>
-            <div 
-            onClick={toggleOpen}
-            className="
+        >
+          Airbnb your home
+        </div>
+        <div
+          onClick={toggleOpen}
+          className="
               p-4
               md:py-1
               md:px-2
@@ -46,16 +49,16 @@ const UserMenu = () => {
               hover:shadow-md 
               transition
               "
-            >
-              <AiOutlineMenu />
-              <div className="hidden md:block">
-                <Avatar />
-              </div>
-            </div>
+        >
+          <AiOutlineMenu />
+          <div className="hidden md:block">
+            <Avatar />
           </div>
-          {isOpen && (
-            <div 
-              className="
+        </div>
+      </div>
+      {isOpen && (
+        <div
+          className="
                 absolute 
                 rounded-xl 
                 shadow-md
@@ -67,50 +70,50 @@ const UserMenu = () => {
                 top-12 
                 text-sm
               "
-            >
-              <div className="flex flex-col cursor-pointer">
-                  <>
-                    <MenuItem 
-                      label="My trips" 
-                      onClick={() => {}}
-                    />
-                    <MenuItem 
-                      label="My favorites" 
-                      onClick={() => {}}
-                    />
-                    <MenuItem 
-                      label="My reservations" 
-                      onClick={() => {}}
-                    />
-                    <MenuItem 
-                      label="My properties" 
-                      onClick={() => {}}
-                    />
-                    <MenuItem 
-                      label="Airbnb your home" 
-                      onClick={() => {}}
-                    />
-                    <hr />
-                    <MenuItem 
-                      label="Logout" 
-                      onClick={() => {}}
-                    />
-                  </>
-                  <>
-                    <MenuItem 
-                      label="Login" 
-                      onClick={() => {}}
-                    />
-                    <MenuItem 
-                      label="Sign up" 
-                      onClick={registerModal.onOpen}
-                    />
-                  </>
-              </div>
-            </div>
-          )}
+        >
+          <div className="flex flex-col cursor-pointer">
+            <>
+              <MenuItem
+                label="My trips"
+                onClick={() => { }}
+              />
+              <MenuItem
+                label="My favorites"
+                onClick={() => { }}
+              />
+              <MenuItem
+                label="My reservations"
+                onClick={() => { }}
+              />
+              <MenuItem
+                label="My properties"
+                onClick={() => { }}
+              />
+              <MenuItem
+                label="Airbnb your home"
+                onClick={() => { }}
+              />
+              <hr />
+              <MenuItem
+                label="Logout"
+                onClick={() => { }}
+              />
+            </>
+            <>
+              <MenuItem
+                label="Login"
+                onClick={loginModal.onOpen}
+              />
+              <MenuItem
+                label="Sign up"
+                onClick={registerModal.onOpen}
+              />
+            </>
+          </div>
         </div>
-       );
+      )}
+    </div>
+  );
 }
 
 export default UserMenu; 
