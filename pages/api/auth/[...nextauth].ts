@@ -56,10 +56,12 @@ export const authOptions: AuthOptions = {
     pages: {
         signIn: '/',
     },
-    debug: process.env.NODE_ENV === 'development',   // ONLY WANT TO ENABLE DEBUG IN DEVELOPMENT,
+    debug: process.env.NODE_ENV === 'development',
     session: {
-        strategy: "jwt"
+        strategy: "jwt",
     },
     secret: process.env.NEXTAUTH_SECRET,
+    //previous error:'JWEDecryptionFailed' came from not defining NEXTAUTH_SECRET=... in .env file
 }
+
 export default NextAuth(authOptions);
