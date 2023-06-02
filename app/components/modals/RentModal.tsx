@@ -8,7 +8,11 @@ import { categories } from "../navbar/Categories";
 import { isTemplateSpan } from "typescript";
 import CategoryInput from "../inputs/CategoryInput";
 import Input from '../inputs/Input';
-
+import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
+import CountrySelect from "../inputs/CountrySelect";
+import dynamic from "next/dynamic";
+//Map needs to be dynamically imported
+//import Map from "../Map";
 
 enum STEPS {
     CATEGORY = 0,
@@ -21,6 +25,44 @@ enum STEPS {
 const RentModal = () => {
     const rentModal = useRentModal();
 
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: {
+            errors,
+        },
+        reset,
+    } = useForm<FieldValues>({
+        defaultValues: {
+            category: '',
+            location: null,
+            guestCount: 1,
+            roomCount: 1,
+            bathroomCount: 1,
+            imageSrc: '',
+            price: 1,
+            title: '',
+            description: '',
+        }
+    });
+    const category = watch('category');
+    const location = watch('location');
+    const Map = useMemo(() => dynamic(() => import('../Map'), {
+        ssr: false
+    }), [location]);
+
+
+    const setCustomValue = (id: string, value: any) => {
+        setValue(id, value, {
+            shouldValidate: true,
+            shouldDirty: true,
+            shouldTouch: true
+
+        })
+    }
+
     // CONTROL FOR STEPS
     const [step, setStep] = useState(STEPS.CATEGORY);
     const onBack = () => {
@@ -30,7 +72,7 @@ const RentModal = () => {
         setStep((value) => value + 1);
     }
 
-    
+
     //action label for submit 
     const actionLabel = useMemo(() => {
         if (step === STEPS.PRICE) {
@@ -67,7 +109,7 @@ const RentModal = () => {
                 {categories.map((item) => (
                     <div key={item.label} className="col-span-1">
                         <CategoryInput
-                            onClick={() => {}}
+                            onClick={(category) => setCustomValue('category', category)}
                             //onClick={(category) => setCustomValue('category', category)}
                             //selected={category === item.label}
                             label={item.label}
@@ -79,15 +121,35 @@ const RentModal = () => {
         </div>
     )
 
+    if (step === STEPS.LOCATION) {
+
+        bodyContent = (
+            <div className="flex flex-col gap-8">
+                <Heading
+                    title="Where is your place located?"
+                    subtitle="Help guests find you!"
+                />
+                <CountrySelect
+                    value={location}
+                    onChange={(value) => setCustomValue('location', value)}
+                />
+                <Map
+                    center={location?.latlng}
+                />
+            </div>
+        )
+    }
+
     return (
         <Modal
             isOpen={rentModal.isOpen}
             onClose={rentModal.onClose}
-            onSubmit={rentModal.onClose}
+            onSubmit={onNext}
             actionLabel={actionLabel}
             secondaryActionLabel={secondaryActionLabel}
             secondaryAction={step == STEPS.CATEGORY ? undefined : onBack}
             title="Airbnb your home"
+            body={bodyContent}
         />
     )
 }
