@@ -1,23 +1,26 @@
 'use client';
 
-import Modal from "./Modal";
-import useRentModal from "@/app/hooks/useRentModal";
-import { useState, useMemo } from "react";
-import Heading from "../Heading";
-import { categories } from "../navbar/Categories";
-import { isTemplateSpan } from "typescript";
-import { useRouter } from 'next/navigation';
-import CategoryInput from "../inputs/CategoryInput";
-import Input from '../inputs/Input';
-import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
-import CountrySelect from "../inputs/CountrySelect";
-import dynamic from "next/dynamic";
-import Counter from "../inputs/Counter";
-import ImageUpload from "../inputs/ImageUpload";
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-//Map needs to be dynamically imported
-//import Map from "../Map";
+import {
+    FieldValues,
+    SubmitHandler,
+    useForm
+} from 'react-hook-form';
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation';
+import { useMemo, useState } from "react";
+
+import useRentModal from '@/app/hooks/useRentModal';
+
+import Modal from "./Modal";
+import Counter from "../inputs/Counter";
+import CategoryInput from '../inputs/CategoryInput';
+import CountrySelect from "../inputs/CountrySelect";
+import { categories } from '../navbar/Categories';
+import ImageUpload from '../inputs/ImageUpload';
+import Input from '../inputs/Input';
+import Heading from '../Heading';
 
 enum STEPS {
     CATEGORY = 0,
@@ -25,12 +28,16 @@ enum STEPS {
     INFO = 2,
     IMAGES = 3,
     DESCRIPTION = 4,
-    PRICE = 5
+    PRICE = 5,
 }
+
 const RentModal = () => {
-    const rentModal = useRentModal();
-    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
+    const rentModal = useRentModal();
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [step, setStep] = useState(STEPS.CATEGORY);
+
     const {
         register,
         handleSubmit,
@@ -53,12 +60,14 @@ const RentModal = () => {
             description: '',
         }
     });
-    const category = watch('category');
+
     const location = watch('location');
+    const category = watch('category');
     const guestCount = watch('guestCount');
     const roomCount = watch('roomCount');
     const bathroomCount = watch('bathroomCount');
     const imageSrc = watch('imageSrc');
+
     const Map = useMemo(() => dynamic(() => import('../Map'), {
         ssr: false
     }), [location]);
@@ -66,18 +75,16 @@ const RentModal = () => {
 
     const setCustomValue = (id: string, value: any) => {
         setValue(id, value, {
-            shouldValidate: true,
             shouldDirty: true,
-            shouldTouch: true
-
+            shouldTouch: true,
+            shouldValidate: true
         })
     }
 
-    // CONTROL FOR STEPS
-    const [step, setStep] = useState(STEPS.CATEGORY);
     const onBack = () => {
         setStep((value) => value - 1);
     }
+
     const onNext = () => {
         setStep((value) => value + 1);
     }
@@ -94,7 +101,7 @@ const RentModal = () => {
                 toast.success('Listing created!');
                 router.refresh();
                 reset();
-                setStep(STEPS.CATEGORY);
+                setStep(STEPS.CATEGORY)
                 rentModal.onClose();
             })
             .catch(() => {
@@ -105,8 +112,6 @@ const RentModal = () => {
             })
     }
 
-
-    //action label for submit 
     const actionLabel = useMemo(() => {
         if (step === STEPS.PRICE) {
             return 'Create'
@@ -115,11 +120,11 @@ const RentModal = () => {
         return 'Next'
     }, [step]);
 
-
     const secondaryActionLabel = useMemo(() => {
         if (step === STEPS.CATEGORY) {
             return undefined
         }
+
         return 'Back'
     }, [step]);
 
@@ -131,19 +136,19 @@ const RentModal = () => {
             />
             <div
                 className="
-              grid 
-              grid-cols-1 
-              md:grid-cols-2 
-              gap-3
-              max-h-[50vh]
-              overflow-y-auto
-            "
+          grid 
+          grid-cols-1 
+          md:grid-cols-2 
+          gap-3
+          max-h-[50vh]
+          overflow-y-auto
+        "
             >
                 {categories.map((item) => (
                     <div key={item.label} className="col-span-1">
                         <CategoryInput
-                            onClick={(category) => setCustomValue('category', category)}
-                            //onClick={(category) => setCustomValue('category', category)}
+                            onClick={(category) =>
+                                setCustomValue('category', category)}
                             selected={category === item.label}
                             label={item.label}
                             icon={item.icon}
@@ -155,7 +160,6 @@ const RentModal = () => {
     )
 
     if (step === STEPS.LOCATION) {
-
         bodyContent = (
             <div className="flex flex-col gap-8">
                 <Heading
@@ -166,12 +170,11 @@ const RentModal = () => {
                     value={location}
                     onChange={(value) => setCustomValue('location', value)}
                 />
-                <Map
-                    center={location?.latlng}
-                />
+                <Map center={location?.latlng} />
             </div>
-        )
+        );
     }
+
     if (step === STEPS.INFO) {
         bodyContent = (
             <div className="flex flex-col gap-8">
@@ -267,8 +270,6 @@ const RentModal = () => {
         )
     }
 
-
-
     return (
         <Modal
             disabled={isLoading}
@@ -281,6 +282,7 @@ const RentModal = () => {
             onClose={rentModal.onClose}
             body={bodyContent}
         />
-    )
+    );
 }
+
 export default RentModal;

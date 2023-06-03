@@ -28,7 +28,7 @@ export async function POST(
         if (!body[value]) {
             NextResponse.error();
         }
-        //does not do anything
+        //does not do
     });
 
     const listing = await prisma.listing.create({
